@@ -58,17 +58,26 @@ class userAuth
             }
         }
 
-        $checkuser = $this->crud->select('users', 'user_id,password', null, "username = ? OR phone = ?", array($data['username'],$data['username']));
+        $checkuser = $this->crud->select('users', 'user_id,password,token', null, "username = ? OR phone = ?", array($data['username'], $data['username']));
         if (is_array($checkuser) && !empty($checkuser['user_id'])) {
             if (password_verify($data['password'], $checkuser['password'])) {
+                // last login
                 $user_id = $checkuser['user_id'];
-                $token = bin2hex(random_bytes(4));
+                $last_login = date('Y-m-d H:i:s');
+                $updateLogin = $this->crud->update('users', array("last_login" => $last_login), "`user_id`=$user_id");
 
-                $updatetoken = $this->crud->update('users',array("token"=>$token),"user_id = $user_id");
-                if($updatetoken){
-                    return $token;
-                }else{
-                    return $updatetoken;
+                if ($checkuser['token'] == null) {
+                    $user_id = $checkuser['user_id'];
+                    $token = bin2hex(random_bytes(4));
+
+                    $updatetoken = $this->crud->update('users', array("token" => $token), "user_id = $user_id");
+                    if ($updatetoken) {
+                        return $token;
+                    } else {
+                        return $updatetoken;
+                    }
+                } else {
+                    return $checkuser['token'];
                 }
             }
         } else {

@@ -8,9 +8,9 @@ $user = new userAuth();
 
 if (isset($_GET['action']) && $_GET['action'] == 'register') {
     $data = array(
-        'username' => 'sameed',
-        'phone' => '03068517336',
-        'password' => 'sameed222',
+        'username' => 'Uzair',
+        'phone' => '123456789',
+        'password' => 'uzair1234',
     );
 
     $registeruser = $user->userRegister($data);
@@ -23,13 +23,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'register') {
 
 if (isset($_GET['action']) && $_GET['action'] == 'login') {
     $data = array(
-        'username' => 'sameed',
-        'password' => 'sameed222',
+        'username' => 'Uzair',
+        'password' => 'uzair1234',
     );
     $loginuser = $user->userLogin($data);
-    if ($loginuser == true && !empty($loginuser)) {
-        echo "User Login Successfully. Token is $loginuser";
-    } else {
-        echo($loginuser);
-    }
+    print_r($loginuser);
+    // if ($loginuser == true && !empty($loginuser)) {
+    //     echo "User Login Successfully. Token is $loginuser";
+    // } else {
+    //     echo($loginuser);
+    // }
 }
